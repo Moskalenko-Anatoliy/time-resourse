@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const tasksRouter = require("./routes/tasks");
 
-const port = 3000;
+const { serverConfig } = require('./config')
 
 app.use(express.json());
 
@@ -19,7 +19,6 @@ app.get("/", (req, res) => {
 });
 
 
-
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+app.listen({host, port} = serverConfig, () => {
+  console.log(`Example app listening at http://${host}:${port}`);
 });
