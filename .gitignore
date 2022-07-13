@@ -23,3 +23,5 @@ node_modules
 doc/**/*.txt
 
 config.js
+
+config.json
