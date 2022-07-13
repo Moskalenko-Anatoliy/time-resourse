@@ -6,7 +6,8 @@ async function getTaskList(empoyeeId) {
     `
       SELECT 
         project.name as projectName, 
-        task.name as taskName
+        task.name as taskName,
+        task.realdeadline as realDeadline
       FROM task
         left join employee on task.employee = employee.id
         left join taskstatus on task.status = taskstatus.id
@@ -19,7 +20,18 @@ async function getTaskList(empoyeeId) {
         ifnull(project.Archive, false) = false
     `,
     [empoyeeId]
-  );    
+  );  
+
+  rows.forEach(elem => {
+    if (elem.realDeadline !== null) {
+      elem.timestamp = elem.realDeadline.getTime();      
+      elem.realDeadline = elem.realDeadline.toLocaleDateString();            
+    } else {
+      elem.timestamp = null;
+      elem.realDeadline = '';
+    }
+
+  })
 
   return rows;
 }
