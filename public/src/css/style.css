@@ -1,0 +1,13 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 1336px;
+  margin: 0 auto;
+  padding: 20px 0 0 0;
+}
+
+.task-list {
+  color: black;
+}
