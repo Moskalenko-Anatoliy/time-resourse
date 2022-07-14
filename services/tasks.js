@@ -25,7 +25,7 @@ async function getTaskList(empoyeeId) {
   rows.forEach(elem => {
     if (elem.realDeadline !== null) {
       elem.timestamp = elem.realDeadline.getTime();      
-      elem.realDeadline = elem.realDeadline.toLocaleDateString();            
+      elem.realDeadline = elem.realDeadline.toLocaleDateString('ru-RU');            
     } else {
       elem.timestamp = null;
       elem.realDeadline = '';
