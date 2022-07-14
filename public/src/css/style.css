@@ -14,7 +14,7 @@ body {
   border-collapse: collapse;
   text-align: left;
   width: 320px;    
-  margin: 20px, auto, 0, auto;
+  margin: 20px auto 0 auto;
 }
 
 .task-list th {
