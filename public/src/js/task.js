@@ -89,9 +89,3 @@ async function createTaskList() {
 
   tbl.classList.add("task-list");
 }
-
-
-const dpt = window.devicePixelRatio;
-const widthM = window.screen.width;
-const widthH = window.screen.height;
-alert(dpt+' '+widthM+' '+widthH+' '+(widthM*dpt)+' '+(widthH*dpt));
