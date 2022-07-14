@@ -42,6 +42,14 @@ body {
   background: #ebf3f9;
 }
 
+.task-list tr:hover, 
+.task-list tr:active, 
+.task-list tr:hover:nth-child(odd) 
+.task-list tr:active:nth-child(odd) {
+  background: rgb(23, 249, 151);
+
+}
+
 .red {
   color: red;
   font-weight: bold;
