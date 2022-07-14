@@ -9,20 +9,33 @@ async function createTaskList() {
   const tasks = await response.json();
   
   tasks.sort((a, b) => {
-    if (a.projectName > b.projectName) {
-      return 1
-    }
 
     if (a.projectName < b.projectName) {
       return -1
-    }    
+    }  
 
-    if (a.taskName > b.taskName) {
+    if (a.projectName > b.projectName) {
       return 1
+    }
+    
+    if (a.timestamp !== null) {
+
+      if (b.timestamp !== null) {
+        return a.timestamp > b.timestamp;
+      }
+      
+      console.log(a.taskName);
+
+      return -1
+      
     }
 
     if (a.taskName < b.taskName) {
       return -1
+    }
+        
+    if (a.taskName > b.taskName) {
+      return 1
     }
 
     return 0
@@ -45,6 +58,8 @@ async function createTaskList() {
     let row;
     let cell;
     let cellText;
+    let span;
+    let spanText;
 
     if (index === 0 || element.projectName !== array[index - 1].projectName) {
       row = document.createElement("tr");  
@@ -60,23 +75,12 @@ async function createTaskList() {
     row = document.createElement("tr"); 
     row.classList.add('task-list__task')
         
-    cell = document.createElement("td");
-
-
-    // cell = document.createElement("td");
-    // cellText = document.createTextNode(element.realDeadline);
-    // console.log(Date.parse(element.realDeadline))
-    // if (element.timestamp !== null && element.timestamp < Date.now()) {
-    //   cell.classList.add('red');
-    //   cell.dataset.deadline = element.realDeadline;
-    // }
-    // cell.appendChild(cellText);
-    // row.appendChild(cell);      
+    cell = document.createElement("td");  
 
     if (element.timestamp !== null) {
       //cell.dataset.deadline = element.realDeadline;
-      const span = document.createElement("span");
-      const spanText = document.createTextNode(element.realDeadline);
+      span = document.createElement("span");
+      spanText = document.createTextNode(element.realDeadline);
       span.appendChild(spanText);
       span.classList.add('task-list__deadline');
       if (element.timestamp < Date.now()) {
