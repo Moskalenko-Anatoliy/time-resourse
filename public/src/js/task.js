@@ -33,7 +33,7 @@ async function createTaskList() {
     if (a.taskName < b.taskName) {
       return -1
     }
-        
+
     if (a.taskName > b.taskName) {
       return 1
     }
@@ -60,6 +60,7 @@ async function createTaskList() {
     let cellText;
     let span;
     let spanText;
+    let div;
 
     if (index === 0 || element.projectName !== array[index - 1].projectName) {
       row = document.createElement("tr");  
@@ -91,7 +92,19 @@ async function createTaskList() {
 
     cellText = document.createTextNode(element.taskName);
     cell.appendChild(cellText);
-    row.appendChild(cell);      
+    
+    div = document.createElement('div');
+    div.classList.add('hide', 'button-wrapper');    
+    const btn = document.createElement('button');
+    btn.classList.add('custom-btn', 'task-list__btn');
+    cellText = document.createTextNode('Открыть');
+    btn.appendChild(cellText);
+    div.appendChild(btn);
+    cell.appendChild(div); 
+
+    row.appendChild(cell); 
+    
+
 
     tblBody.appendChild(row);
   })
