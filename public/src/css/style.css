@@ -12,9 +12,8 @@ body {
 .task-list {
   background: #f5ffff;
   border-collapse: collapse;
-  text-align: left;
-  max-width: 320px;    
-  margin: 20px auto 0 auto;
+  text-align: left; 
+  margin: 20px auto 0 auto; 
 }
 
 .task-list th {
@@ -29,13 +28,20 @@ body {
 
 .task-list td {
   border: 1px solid #e3eef7;
-  padding: 10px 15px;
-  position: relative;
-  transition: all 0.5s ease;
+  padding: 10px 15px;  
 }
 
 .task-list__project {
   font-weight: bold;  
+}
+
+.task-list__deadline {
+  float: right;
+  margin: 0 0 1px 1px;
+  padding: 2px;
+  border: solid 1px;
+  border-radius: 30%;
+  font-size: 15px;
 }
 
 .task-list tr:nth-child(odd) {
