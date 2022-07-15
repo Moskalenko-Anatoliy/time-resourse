@@ -1,8 +1,9 @@
 const express = require("express");
 const app = express();
-const tasksRouter = require("./routes/tasks");
+const tasksRouter = require("./routes/api/tasks");
 const { serverConfig } = require('./config');
 const path = require("path")
+const passport = require('passport');
 
 app.use(express.json());
 
@@ -14,8 +15,9 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use("/api/tasks", tasksRouter);
+app.use(passport.initialize());
 
+app.use("/api/tasks", tasksRouter);
 app.get("/", (req, res) => {  
   res.sendFile(path.join(__dirname, '/public/index.html'));
 });
