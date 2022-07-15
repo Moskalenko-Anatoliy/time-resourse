@@ -2,11 +2,27 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: "Roboto";
+  src: local("Roboto Regular");
+  src: url("../fonts/Roboto-Regular.ttf");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: local("Roboto Bold");
+  src: url("../fonts/Roboto-Bold.ttf");
+  font-weight: 700;  
+}
+
 body {  
   margin: 0 auto;
   padding: 20px 5px 0 5px;
   font-size: 15px;
   width: 360px;
+  font-family: "Roboto";
+  font-weight: 400;
 }
 
 .task-list {
@@ -14,7 +30,8 @@ body {
   border-collapse: collapse;
   text-align: left; 
   margin: 20px auto 0 auto;
-  width: 320px;   
+  width: 350px;   
+  overflow-wrap: break-word;
 }
 
 .task-list th {
@@ -33,16 +50,7 @@ body {
 }
 
 .task-list__project {
-  font-weight: bold;  
-}
-
-.task-list__deadline {
-  float: right;
-  margin: 0 0 1px 1px;
-  padding: 2px;
-  border: solid 1px;
-  border-radius: 30%;
-  font-size: 15px;
+  font-weight: 700;  
 }
 
 .task-list tr:nth-child(odd) {
@@ -86,4 +94,9 @@ body {
 header h1 {  
   text-decoration: none;  
   text-shadow: 1px 1px 1px #003300;
+}
+
+.task-list__deadline {
+  padding-bottom: 2px;
+  text-align: right;
 }

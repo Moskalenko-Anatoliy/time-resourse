@@ -79,7 +79,7 @@ async function createTaskList() {
     cell = document.createElement("td");  
 
     if (element.timestamp !== null) {
-      span = document.createElement("span");
+      span = document.createElement("div");
       spanText = document.createTextNode(element.realDeadline);
       span.appendChild(spanText);
       span.classList.add('task-list__deadline');
