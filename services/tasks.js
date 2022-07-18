@@ -1,4 +1,3 @@
-const db = require('./db');
 const crud = require('./db');
 
 async function getTaskList(empoyeeId) {
@@ -25,7 +24,6 @@ async function getTaskList(empoyeeId) {
   rows.forEach(elem => {
     if (elem.realDeadline !== null) {
       elem.timestamp = elem.realDeadline.getTime();      
-      var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       elem.realDeadline = elem.realDeadline.toLocaleDateString('ru-RU');            
     } else {
       elem.timestamp = null;

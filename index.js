@@ -1,12 +1,12 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const tasksRouter = require("./routes/api/tasks");
-const loginRouter = require("./routes/pages/login");
+const authRouter = require('./routes/authRouter.js')
+const tasksRouter = require('./routes/taskListRouter.js');
 const { serverConfig } = require('./config');
-const path = require("path")
-const passport = require('passport');
+const path = require('path')
 
 app.use(express.json());
+
 
 // app.use(
 //   express.urlencoded({
@@ -16,11 +16,10 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(passport.initialize());
+app.use('/auth', authRouter);
+app.use('/api/tasks', tasksRouter);
 
-app.use("/api/tasks", tasksRouter);
-app.use('/pages/login', loginRouter);
-app.get("/", (req, res) => {  
+app.get('/', (req, res) => {  
   res.sendFile(path.join(__dirname, '/public/index.html'));
 });
 
