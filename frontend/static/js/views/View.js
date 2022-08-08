@@ -15,11 +15,12 @@ export default class {
         <a href="/tasks" id="tasks" data-link>Мои задачи</a>      
       </nav>    `    
       
-    if (localStorage.getItem('authorized') == 0) {
-      document.querySelector("#logout-menu").classList.add('hide')
-      document.querySelector("#login-menu").click()
+    if (localStorage.getItem('authorized') == 1) {
+      document.querySelector(".main-menu").classList.remove("hide")   
+
     } else {
-      document.querySelector(".main-menu").classList.remove("hide")      
+      document.querySelector("#logout-menu").classList.add('hide')
+      document.querySelector("#login-menu").click()         
     }
 }
   
