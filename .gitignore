@@ -25,3 +25,5 @@ doc/**/*.txt
 config.js
 
 config.json
+
+package-lock.json

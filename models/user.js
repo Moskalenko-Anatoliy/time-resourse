@@ -1,12 +1,12 @@
 const crud = require('../services/db');
 
-class User {
+class User {    
   async findByLogin(login) {
     try {
       const row = await crud.query(
         `
           SELECT
-            employee.id
+            employee.id as id, tmaUsers.hash as hash
           FROM employee
             left join tmaUsers on employee.user = tmaUsers.id
           WHERE

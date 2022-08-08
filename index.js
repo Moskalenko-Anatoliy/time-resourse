@@ -4,23 +4,29 @@ const authRouter = require('./routes/authRouter.js')
 const tasksRouter = require('./routes/taskListRouter.js');
 const { serverConfig } = require('./config');
 const path = require('path')
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser')
 
 app.use(express.json());
 
 
-// app.use(
-//   express.urlencoded({
-//     extended: true,
-//   })
-// );
+app.use(
+  express.urlencoded({
+     extended: true,
+   })
+);
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/static', express.static(path.resolve(__dirname, "frontend", "static")));
 
-app.use('/auth', authRouter);
+app.use(bodyParser.urlencoded({extended:true}))
+
+app.use(cookieParser())
+
+app.use('/api/auth', authRouter);
 app.use('/api/tasks', tasksRouter);
 
-app.get('/', (req, res) => {  
-  res.sendFile(path.join(__dirname, '/public/index.html'));
+app.get('/*', (req, res) => {  
+  res.sendFile(path.resolve("frontend", "index.html"))
 });
 
 

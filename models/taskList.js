@@ -12,9 +12,10 @@ class TaskList {
           FROM task
             left join employee on task.employee = employee.id
             left join taskstatus on task.status = taskstatus.id
-            left join project on task.project = project.id
+            left join project on task.project = project.id            
           WHERE 
             employee.id = ? and 
+            ifnull(task.Agreement, 0) in (2, 5) and
             taskstatus.complete = false and 
             taskstatus.name not in ('Периодические', 'Архив', 'Заморожена') and
             ifnull(project.Freezed, false) = false and
@@ -37,7 +38,7 @@ class TaskList {
       return rows;
       
     } catch(err) {
-      console.log('ERROR ERROR ERRROR', err);
+      console.log(err);
     }
   
   }

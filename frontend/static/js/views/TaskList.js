@@ -1,13 +1,63 @@
-document.body.onload = createTaskList;
+import View from "./View.js"
+import fetchWithAuth from "../modules/fetchWithAuth.js"
 
-async function createTaskList() {
+export default class extends View {
+  constructor() {
+    super()    
+  }
+
+  async createHtml() {
+    super.addNavigate();
+    await createTaskList();
+  }
+}
+
+function sortTasks(a, b) {
+  if (a.projectName < b.projectName) {
+    return -1
+  }  
+
+  if (a.projectName > b.projectName) {
+    return 1
+  }    
   
-  const serverConfigResponse = await fetch('/config.json');
-  const serverConfig =  await serverConfigResponse.json();    
+  if (a.timestamp !== null) {
 
-  const response = await fetch(`http://${serverConfig.host}:${serverConfig.port}/api/tasks`);
+    if (b.timestamp !== null) {        
+      if (a.timestamp < b.timestamp) {
+        return -1
+      } else {
+        return 1
+      }      
+    }            
+
+    return -1      
+  }
+
+  if (a.taskName < b.taskName) {
+    return -1
+  }
+
+  if (a.taskName > b.taskName) {
+    return 1
+  }
+
+  return 0  
+}
+
+async function createTaskList() {  
+
+  const response = await fetchWithAuth("/api/tasks", {
+    method: "GET"
+  });
+  
+  if (!response) {
+    alert("RestApi СУВР в данный момент не доступен, попробуйте позже");
+    return;
+  };
+
   const tasks = await response.json();
-  
+
   tasks.sort((a, b) => {
 
     if (a.projectName < b.projectName) {
@@ -16,18 +66,19 @@ async function createTaskList() {
 
     if (a.projectName > b.projectName) {
       return 1
-    }
+    }    
     
     if (a.timestamp !== null) {
 
-      if (b.timestamp !== null) {
-        return a.timestamp > b.timestamp;
-      }
-      
-      console.log(a.taskName);
+      if (b.timestamp !== null) {        
+        if (a.timestamp < b.timestamp) {
+          return -1
+        } else {
+          return 1
+        }      
+      }            
 
-      return -1
-      
+      return -1      
     }
 
     if (a.taskName < b.taskName) {
@@ -46,8 +97,8 @@ async function createTaskList() {
   
   const row = document.createElement("tr");
 
-  cell = document.createElement("th");
-  cellText = document.createTextNode("Задача");
+  const cell = document.createElement("th");
+  const cellText = document.createTextNode("Задача");
   cell.appendChild(cellText);
   row.appendChild(cell);  
 
@@ -82,9 +133,9 @@ async function createTaskList() {
       span = document.createElement("div");
       spanText = document.createTextNode(element.realDeadline);
       span.appendChild(spanText);
-      span.classList.add('task-list__deadline');
+      span.classList.add("task-list__deadline");
       if (element.timestamp < Date.now()) {
-        span.classList.add('red');      
+        span.classList.add("red");      
       }
       cell.appendChild(span);       
     }
@@ -110,7 +161,7 @@ async function createTaskList() {
 
   tbl.appendChild(tblBody);
   
-  document.body.appendChild(tbl);
+  document.querySelector("#app").appendChild(tbl);
 
   tbl.classList.add("task-list");
 }

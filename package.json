@@ -10,12 +10,14 @@
   "author": "Moskalenko",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",
+    "cookie-parser": "^1.4.6",
     "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.19",
     "npm": "^8.12.1",
-    "passport": "^0.6.0",
-    "passport-local": "^1.0.0"
+    "uuid": "^8.3.2"
   }
 }

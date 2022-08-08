@@ -3,9 +3,9 @@ const TaskList = require('../models/taskList')
 class taskListController {
   async getTaskList(req, res) {
     try {            
-      res.json(await TaskList.getTaskList(3));
+      return res.json(await TaskList.getTaskList(req.userId));
     } catch(e) {            
-      res.status(400).json({'message': 'Ошибка получения задач!'})
+      return res.status(400).json({'message': 'Ошибка получения задач!'})
     };        
   };
 }
