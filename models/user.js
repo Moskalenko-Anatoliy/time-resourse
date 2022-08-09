@@ -21,6 +21,43 @@ class User {
     }
     
   }
+
+  async checkRefreshToken(userId, RefreshToken) {
+    try {        
+      const tokenExists = await crud.query(
+        `
+          select 
+            id  
+          from tmaUsers
+          WHERE
+            id  = ${userId} and refreshToken = "${RefreshToken}"
+          limit 1
+        `      
+      );
+      
+      return tokenExists ? true : false
+    } catch (err) {
+      console.log(err)
+    }    
+  }  
+
+  async updateRefreshToken(userId, newRefreshToken) {
+    try {        
+      await crud.query(
+        `
+          update 
+            tmaUsers
+          Set 
+            tmaUsers.refreshToken = "${newRefreshToken}"  
+          WHERE
+            id  = ${userId}          
+        `      
+      );
+      return true
+    } catch (err) {
+      console.log(err)
+    }    
+  }
 }
 
 module.exports = new User();

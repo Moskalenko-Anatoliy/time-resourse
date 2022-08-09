@@ -45,7 +45,7 @@ export default class extends View {
         "password": document.querySelector('#current-password').value,
       })
     });
-    const result = await response.json();
+    const result = await response.json();    
   
     if (result.accessToken) {
       localStorage.setItem("accessToken", result.accessToken);
@@ -57,6 +57,7 @@ export default class extends View {
       //document.querySelector("#tasks").click() 
         
     } else {
+      alert("Неверный логин или пароль");
       localStorage.setItem("authorized", 0);
       localStorage.removeItem("accessToken");           
     }

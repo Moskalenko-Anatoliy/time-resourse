@@ -51,8 +51,7 @@ async function createTaskList() {
     method: "GET"
   });
   
-  if (!response) {
-    alert("RestApi СУВР в данный момент не доступен, попробуйте позже");
+  if (!response) { 
     return;
   };
 

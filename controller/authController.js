@@ -6,7 +6,7 @@ const { secretToken } = require('../config');
 function generateAccessToken(userId) {  
   return jwt.sign({    
     userId    
-  }, secretToken, { expiresIn: '1m' });  
+  }, secretToken, { expiresIn: '15s' });  
 }
 
 function generateRefreshToken(userId) {  
@@ -34,7 +34,11 @@ class authController {
 
       const accessToken = generateAccessToken(user[0].id);
       
-      const refreshToken = generateRefreshToken(user[0].id);      
+      const refreshToken = generateRefreshToken(user[0].id);   
+      
+      if (refreshToken) {
+        await User.updateRefreshToken(user[0].id, refreshToken)
+      }
       
       return res
         .status(200)
@@ -61,20 +65,37 @@ class authController {
 
   async refreshAccessToken(req, res) {    
     try {
-      const refreshToken = req.cookies.refreshToken;
+      const refreshToken = req?.cookies?.refreshToken;      
+
+      if (!refreshToken) {
+        res.status(401).json({messsage: "Необходимо перелогиниться (отсутствуют токен обновления)"})        
+      }
+
+      if (!refreshToken) {
+        res.status(401).json({messsage: "Необходимо перелогиниться (отсутствуют токен обновления)"})
+      }
+
       const decodedData = jwt.verify(refreshToken, secretToken);   
+      const tokenExists = User.checkRefreshToken(decodedData.userId, refreshToken);
+      if (!tokenExists) {
+        res.status(401).json({messsage: "Необходимо перелогиниться (токен обновления не валидный)"})        
+      }
+      const newRefreshToken = generateRefreshToken(decodedData.userId);
+
       const newAccessToken = generateAccessToken(decodedData.userId);
+      User.updateRefreshToken(decodedData.userId, newRefreshToken);
 
       return res
         .status(200)
-        .cookie("refreshToken", refreshToken, {
+        .cookie("refreshToken", newRefreshToken, {
           httpOnly: true
         })
         .json({
         accessToken: newAccessToken        
       });      
     } catch(e) {
-
+      console.log(e.name);
+      console.log(e.message);         
     }
 
   }
