@@ -6,7 +6,7 @@ const { secretToken } = require('../config');
 function generateAccessToken(userId) {  
   return jwt.sign({    
     userId    
-  }, secretToken, { expiresIn: '15s' });  
+  }, secretToken, { expiresIn: '15m' });  
 }
 
 function generateRefreshToken(userId) {  
