@@ -21,13 +21,26 @@ export default class extends View {
       <section>
           <label for="current-password">Пароль</label>
           <input class="login-input" id="current-password" name="password" type="password" autocomplete="current-password" required>
+          
+          <div id="show-password">
+            <input type="checkbox" id="show-password">
+            <label for="show-password">Показать пароль</label>
+          </div>
+           
       </section>
       <button class="login-button" name="login-button" type="submit">Войти</button>
     </div>
   </form>  `
+
+  
+
+  document.querySelector('#show-password').addEventListener('click', (e) => {                
+    document.querySelector("#current-password").type = e.target.checked ? "text" : "password";    
+  });
+
+  
   
   const btn = document.querySelector('.login-button');
-  
   btn.addEventListener('click', async (e) => {
     e.preventDefault();
   
