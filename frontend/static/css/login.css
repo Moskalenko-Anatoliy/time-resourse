@@ -39,5 +39,13 @@
 }
 
 #show-password {
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#show-password input {
+  margin-right: 5px;
+  width: 1.5rem;
+  height: 1.5rem;
 }
