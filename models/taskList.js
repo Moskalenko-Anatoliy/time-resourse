@@ -8,7 +8,10 @@ class TaskList {
           SELECT 
             project.name as projectName, 
             task.name as taskName,
-            task.realdeadline as realDeadline
+            task.id as taskId,
+            task.realdeadline as realDeadline,
+            employee.name as employeeName,
+            taskstatus.name as statusName             
           FROM task
             left join employee on task.employee = employee.id
             left join taskstatus on task.status = taskstatus.id

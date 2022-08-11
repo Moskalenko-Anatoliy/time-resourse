@@ -97,6 +97,52 @@ header h1 {
 }
 
 .task-list__deadline {
-  padding-bottom: 2px;
   text-align: right;
+}
+
+.project-list {
+  text-align: left; 
+  width: 350px;   
+}
+
+.project-list__project {
+  border: 1px solid #e3eef7;
+  margin: 20px auto 0 auto;
+  padding: 5px 0 0 5px;
+  font-weight: 700;  
+  background: #f5ffff;  
+  border: 2px solid #15b5b5;
+  border-radius: 10px;  
+  color: white;
+  text-shadow: 1px 1px black, 1px -1px black, -1px 1px black, -1px -1px black, 3px 3px 6px rgba(0,0,0,.5);
+}
+
+
+
+.project-list__employee-list__employee {
+  color: black;
+  text-shadow: none;
+
+  padding-top: 10px;  
+  margin-bottom: 10px;
+  font-weight: 400;  
+  text-shadow: 1px 1px;
+  text-align: center;
+}
+
+.project-list__task-list {
+  padding-top: 5px;
+  text-shadow: none;
+  text-align: left;
+}
+
+.project-list__task-list__task {
+  padding: 5px 5px 5px 0;
+  border-bottom: 1px solid palevioletred;
+}
+
+.project-list__task-list__task:hover, 
+.project-list__task-list__task:active {
+  background: rgb(23, 249, 151);
+
 }
