@@ -5,12 +5,14 @@ export default class extends View {
   constructor() {
     super()   
     this.tasks = [];
-    this.projectList = [];     
+    this.projectList = [];
+    this.employeeId = 0;     
   }
 
   async createHtml() {
     super.addNavigate();
     await this.getTaskList();   
+    this.createHtmlFilter();
     this.tasks.forEach(element => this.createProjectList(element));
     this.projectList.forEach(project => {      
       project.employeeList.sort((a, b) => a < b);
@@ -19,6 +21,7 @@ export default class extends View {
       })
     }); 
     this.createHtmlProjectList();
+    document.querySelector("#filter-mytask").click();
   }
 
   async getTaskList() {
@@ -28,10 +31,39 @@ export default class extends View {
     
     if (!response) { 
       return;
-    };
+    };   
   
     this.tasks = await response.json();
   }
+
+  createHtmlFilter() {
+    const myCheckBox = document.createElement("input");
+    myCheckBox.setAttribute("name", "filter-mytask");
+    myCheckBox.setAttribute("type", "checkbox");    
+    myCheckBox.setAttribute("id", "filter-mytask");        
+    myCheckBox.classList.add("checkbox");
+    
+    const label = document.createElement("label");
+    label.setAttribute("for", "filter-mytask")
+    label.textContent = "Мои"
+
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("checkbox-wrapper");    
+    wrapper.appendChild(myCheckBox);
+    wrapper.appendChild(label);    
+    document.querySelector("#app").appendChild(wrapper);  
+    
+    myCheckBox.addEventListener("click", (event) => {      
+      const employeeList = document.querySelectorAll("[data-my-task = '0']")
+      employeeList.forEach((e) => {        
+        if (event.target.checked) {
+            e.classList.add("hide");
+        } else {
+          e.classList.remove("hide");
+        }
+      })
+    })
+  };
 
   createHtmlProjectList() {
     const projectUl = document.createElement("ul");
@@ -42,11 +74,12 @@ export default class extends View {
       projectLi.textContent = project.projectName;  
       projectUl.appendChild(projectLi);
 
-      const employeeUl = document.createElement("ul");
-      employeeUl.classList.add("project-list__employee-list")
+      const employeeUl = document.createElement("ul");      
+      employeeUl.classList.add("project-list__employee-list")      
       projectLi.appendChild(employeeUl);
       this.projectList[projectIndex].employeeList.forEach((employee, employeeIndex) => {
-        const employeeLi = document.createElement("li");
+        const employeeLi = document.createElement("li");                
+        employeeLi.setAttribute("data-my-task", localStorage.getItem("employeeId") == employee.employeeId ? "1" : "0");
         employeeLi.classList.add("project-list__employee-list__employee")
         employeeLi.textContent = employee.employeeName;          
         employeeUl.appendChild(employeeLi);
@@ -59,16 +92,24 @@ export default class extends View {
           const taskLi = document.createElement("li");
           taskLi.classList.add("project-list__task-list__task")
           taskLi.textContent = `${taskIndex + 1}. ${task.taskName}`;
-
+        
           if (task.timestamp !== null) {
-            const div = document.createElement("div");
-            div.textContent = `дедлайн - ${task.realDeadline}`;            
-            div.classList.add("task-list__deadline");
+            const divTime = document.createElement("div");
+            divTime.textContent = `дедлайн - ${task.realDeadline}`;            
+            divTime.classList.add("task-list__deadline");
             if (task.timestamp < Date.now()) {
-              div.classList.add("red");      
+              divTime.classList.add("red");      
             }
-            taskLi.appendChild(div);       
+            taskLi.appendChild(divTime);       
           }
+
+          const divBtn = document.createElement("div");
+          divBtn.classList.add("hide", "button-wrapper");    
+          const btn = document.createElement("button");
+          btn.classList.add("custom-btn", "task-list__btn");
+          btn.textContent = "Открыть";
+          divBtn.appendChild(btn);
+          taskLi.appendChild(divBtn);                     
                     
           taskUl.appendChild(taskLi);
         })          
@@ -80,84 +121,6 @@ export default class extends View {
 
 
   }
-
-  async createTaskList() {  
-  
-    this.tasks.sort((a,b) => sortTasks(a, b))
-    
-    const tbl = document.createElement("table");  
-    const tblBody = document.createElement("tbody"); 
-    
-    const row = document.createElement("tr");
-  
-    const cell = document.createElement("th");
-    const cellText = document.createTextNode("Задача");
-    cell.appendChild(cellText);
-    row.appendChild(cell);  
-  
-    tblBody.appendChild(row);
-  
-    this.tasks.forEach((element, index, array) => {
-      
-      let row;
-      let cell;
-      let cellText;
-      let span;
-      let spanText;
-      let div;
-  
-      if (index === 0 || element.projectName !== array[index - 1].projectName) {
-        row = document.createElement("tr");  
-        cell = document.createElement("td");
-        cell.setAttribute('colspan', '3');
-        cellText = document.createTextNode(element.projectName);
-        cell.classList.add('task-list__project')
-        cell.appendChild(cellText);
-        row.appendChild(cell);   
-        tblBody.appendChild(row);      
-      }
-      
-      row = document.createElement("tr"); 
-      row.classList.add('task-list__task')
-          
-      cell = document.createElement("td");  
-  
-      if (element.timestamp !== null) {
-        span = document.createElement("div");
-        spanText = document.createTextNode(element.realDeadline);
-        span.appendChild(spanText);
-        span.classList.add("task-list__deadline");
-        if (element.timestamp < Date.now()) {
-          span.classList.add("red");      
-        }
-        cell.appendChild(span);       
-      }
-  
-      cellText = document.createTextNode(element.taskName);
-      cell.appendChild(cellText);
-      
-      div = document.createElement('div');
-      div.classList.add('hide', 'button-wrapper');    
-      const btn = document.createElement('button');
-      btn.classList.add('custom-btn', 'task-list__btn');
-      cellText = document.createTextNode('Открыть');
-      btn.appendChild(cellText);
-      div.appendChild(btn);
-      cell.appendChild(div); 
-  
-      row.appendChild(cell); 
-      
-  
-  
-      tblBody.appendChild(row);
-    })
-  
-    tbl.appendChild(tblBody);
-    
-    document.querySelector("#app").appendChild(tbl);
-  
-    tbl.classList.add("task-list");
-  }  
 
   createProjectList(element) {  
     let projectIndex = this.projectList.findIndex(elem => {
@@ -172,7 +135,10 @@ export default class extends View {
       return elem.employeeName === element.employeeName;
     });
     if (employeeIndex === -1) {
-      employeeIndex = this.projectList[projectIndex].employeeList.push({employeeName: element.employeeName}) - 1;
+      employeeIndex = this.projectList[projectIndex].employeeList.push({
+        employeeName: element.employeeName,
+        employeeId: element.employeeId
+      }) - 1;
       this.projectList[projectIndex].employeeList[employeeIndex].taskList = [];
     }
     

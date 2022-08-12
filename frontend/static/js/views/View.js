@@ -12,7 +12,7 @@ export default class {
       <nav class="main-menu hide"">      
         <a href="/login" id="login-menu" data-link class="hide">Войти</a>              
         <a href="/logout" id="logout-menu">Выйти</a>                      
-        <a href="/tasks" id="tasks" data-link>Мои задачи</a>      
+        <a href="/tasks" id="tasks" data-link>Задачи</a>      
       </nav>    `    
       
     if (localStorage.getItem('authorized') == 1) {

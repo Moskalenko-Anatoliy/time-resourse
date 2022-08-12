@@ -77,9 +77,10 @@ body {
 .main-menu {
   display: flex;
   justify-content: space-between;
-  background-color:  #ebf3f9;
+  background-color:  #FFFAF0;
   margin-top: 5px;
   padding: 10px;
+  margin-bottom: 5px;
 }
 
 .main-menu a {
@@ -93,7 +94,7 @@ body {
 
 header h1 {  
   text-decoration: none;  
-  text-shadow: 1px 1px 1px #003300;
+  text-shadow: 1px 1px 1px black;
 }
 
 .task-list__deadline {
@@ -105,44 +106,63 @@ header h1 {
   width: 350px;   
 }
 
-.project-list__project {
-  border: 1px solid #e3eef7;
-  margin: 20px auto 0 auto;
+.project-list__project {  
+  margin: 5px auto 0 auto;
   padding: 5px 0 0 5px;
   font-weight: 700;  
-  background: #f5ffff;  
-  border: 2px solid #15b5b5;
-  border-radius: 10px;  
-  color: white;
-  text-shadow: 1px 1px black, 1px -1px black, -1px 1px black, -1px -1px black, 3px 3px 6px rgba(0,0,0,.5);
+}
+
+.project-list__employee-list { 
+  margin-top: 5px;  
 }
 
 
-
 .project-list__employee-list__employee {
+  background: #FFFAF0;
+  border: 2px solid grey;
+  border-radius: 10px;
+
   color: black;
   text-shadow: none;
 
   padding-top: 10px;  
+  padding-left: 5px;
+  padding-bottom: 5px;
+
   margin-bottom: 10px;
-  font-weight: 400;  
-  text-shadow: 1px 1px;
-  text-align: center;
+  font-weight: 400;    
+  text-align: left;  
 }
 
-.project-list__task-list {
+.project-list__task-list {  
   padding-top: 5px;
   text-shadow: none;
   text-align: left;
 }
 
-.project-list__task-list__task {
+.project-list__task-list__task {  
   padding: 5px 5px 5px 0;
-  border-bottom: 1px solid palevioletred;
+  border-bottom: 1px solid grey;
 }
 
 .project-list__task-list__task:hover, 
 .project-list__task-list__task:active {
-  background: rgb(23, 249, 151);
+  background: #DCDCDC;
 
+}
+
+.project-list__task-list__task:hover div {
+  display: block;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.checkbox {    
+  width: 1.3rem;
+  height: 1.3rem;
+  margin-right: 2px;
 }

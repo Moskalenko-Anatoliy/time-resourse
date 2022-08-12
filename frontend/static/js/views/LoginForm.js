@@ -1,4 +1,5 @@
-import View from "./View.js"
+import View from "./View.js";
+import * as helper from "../modules/helper.js";
 
 export default class extends View {
   constructor() {
@@ -62,7 +63,9 @@ export default class extends View {
   
     if (result.accessToken) {
       localStorage.setItem("accessToken", result.accessToken);
-      localStorage.setItem("authorized", 1);     
+      localStorage.setItem("authorized", 1);   
+      const payLoad = helper.parseJwt(result.accessToken);  
+      localStorage.setItem("employeeId", payLoad.userId);
 
       let event = new Event("showTaskList", {bubbles: true}); // (2)
       document.dispatchEvent(event);       
@@ -73,6 +76,7 @@ export default class extends View {
       alert("Неверный логин или пароль");
       localStorage.setItem("authorized", 0);
       localStorage.removeItem("accessToken");           
+      localStorage.removeItem("employeeId");   
     }
 
   });
