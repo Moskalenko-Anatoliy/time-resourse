@@ -21,7 +21,9 @@ export default class extends View {
       })
     }); 
     this.createHtmlProjectList();
-    document.querySelector("#filter-mytask").click();
+    
+    document.querySelector("#filter-mytask").checked = true;
+    this.createFilter();
   }
 
   async getTaskList() {
@@ -36,33 +38,102 @@ export default class extends View {
     this.tasks = await response.json();
   }
 
-  createHtmlFilter() {
+  createCheckBox(name, text, clickEvent) {
     const myCheckBox = document.createElement("input");
-    myCheckBox.setAttribute("name", "filter-mytask");
+    myCheckBox.setAttribute("name", name);
     myCheckBox.setAttribute("type", "checkbox");    
-    myCheckBox.setAttribute("id", "filter-mytask");        
+    myCheckBox.setAttribute("id", name);        
     myCheckBox.classList.add("checkbox");
     
     const label = document.createElement("label");
-    label.setAttribute("for", "filter-mytask")
-    label.textContent = "Мои"
-
-    const wrapper = document.createElement("div");
-    wrapper.classList.add("checkbox-wrapper");    
+    label.setAttribute("name", `${name}-label"`);
+    label.setAttribute("for", name)
+    label.textContent = text;
+   
+    const wrapper = document.querySelector(".checkbox-wrapper");
     wrapper.appendChild(myCheckBox);
     wrapper.appendChild(label);    
-    document.querySelector("#app").appendChild(wrapper);  
     
-    myCheckBox.addEventListener("click", (event) => {      
-      const employeeList = document.querySelectorAll("[data-my-task = '0']")
-      employeeList.forEach((e) => {        
-        if (event.target.checked) {
-            e.classList.add("hide");
-        } else {
-          e.classList.remove("hide");
-        }
-      })
+    myCheckBox.addEventListener("click", clickEvent.bind(this));
+ 
+  }
+
+  showAll() {
+    const elemenstHtml = document.querySelectorAll(".project-list__project.hide, .project-list__employee-list__employee.hide, .project-list__employee-list__employee__name.hide, .project-list__task-list__task.hide");      
+    elemenstHtml.forEach(e => {
+      e.classList.remove("hide");
     })
+  }
+
+  hideProject() {
+    const projectListHtml = document.querySelectorAll(".project-list__project");        
+    projectListHtml.forEach(project => {
+      const task = document.querySelector(`.project-list__employee-list__employee:not(.hide) .project-list__task-list__task[data-project="${project.dataset.id}"]:not(.hide)`);      
+      if (!task) {  
+        project.classList.add("hide");        
+      }
+
+      const employeeListHtml = document.querySelectorAll(`.project-list__project[data-id="${project.dataset.id}"]:not(.hide) .project-list__employee-list__employee:not(.hide)`);      
+       employeeListHtml.forEach(employee => {
+        const task = document.querySelector(`.project-list__project[data-id="${project.dataset.id}"]:not(.hide) .project-list__employee-list__employee[data-id="${employee.dataset.id}"]:not(.hide) .project-list__task-list__task:not(.hide)`);              
+        if (!task) {  
+          employee.classList.add("hide");        
+        }      
+      });
+    })
+};
+
+  createFilter() {    
+    this.showAll();
+
+    const myTask = document.querySelector("#filter-mytask");
+    this.createMyTaskFilter(myTask.checked);
+
+    const periodFilter = document.querySelector("#filter-period");
+    this.createTaskPeriodFilter(periodFilter.checked);    
+
+    this.hideProject();
+    
+  }
+
+  createMyTaskFilter(checked) {
+    const employeeList = document.querySelectorAll(`[data-my-task = "0"]`)
+    employeeList.forEach((e) => {        
+      if (checked) {
+          e.classList.add("hide");
+      } else {
+        e.classList.remove("hide");
+      }})
+
+      const employeeNames = document.querySelectorAll(".project-list__employee-list__employee__name")
+      employeeNames.forEach((e) => {        
+      if (checked) {
+          e.classList.add("hide");
+      } else {
+        e.classList.remove("hide");
+      }})     
+  }
+
+  createTaskPeriodFilter(checked) {         
+    const taskList = document.querySelectorAll(`.project-list__task-list__task[data-statusname="Периодические"]`)
+    taskList.forEach((e) => {        
+    if (!checked) {      
+        e.classList.add("hide");
+    } else {
+      e.classList.remove("hide");
+    }})            
+  }  
+
+  createHtmlFilter() {
+   
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("checkbox-wrapper"); 
+    document.querySelector("#app").appendChild(wrapper); 
+
+    this.createCheckBox("filter-mytask", "Мои", this.createFilter);
+
+    this.createCheckBox("filter-period", "Периодические",  this.createFilter);
+                  
   };
 
   createHtmlProjectList() {
@@ -71,7 +142,8 @@ export default class extends View {
     this.projectList.forEach((project, projectIndex) => {
       const projectLi = document.createElement("li");
       projectLi.classList.add("project-list__project")
-      projectLi.textContent = project.projectName;  
+      projectLi.textContent = project.projectName;
+      projectLi.setAttribute("data-id", project.projectId);
       projectUl.appendChild(projectLi);
 
       const employeeUl = document.createElement("ul");      
@@ -81,7 +153,11 @@ export default class extends View {
         const employeeLi = document.createElement("li");                
         employeeLi.setAttribute("data-my-task", localStorage.getItem("employeeId") == employee.employeeId ? "1" : "0");
         employeeLi.classList.add("project-list__employee-list__employee")
-        employeeLi.textContent = employee.employeeName;          
+        const employeeLiDiv = document.createElement("div");   
+        employeeLiDiv.textContent = employee.employeeName; 
+        employeeLiDiv.classList.add("project-list__employee-list__employee__name")
+        employeeLi.setAttribute("data-id", employee.employeeId);
+        employeeLi.appendChild(employeeLiDiv);         
         employeeUl.appendChild(employeeLi);
 
         const taskUl = document.createElement("ul");
@@ -91,8 +167,8 @@ export default class extends View {
         this.projectList[projectIndex].employeeList[employeeIndex].taskList.forEach((task, taskIndex) => {
           const taskLi = document.createElement("li");
           taskLi.classList.add("project-list__task-list__task")
-          taskLi.textContent = `${taskIndex + 1}. ${task.taskName}`;
-        
+          taskLi.textContent = `${task.taskName}`;
+          taskLi.setAttribute("data-project", project.projectId);
           if (task.timestamp !== null) {
             const divTime = document.createElement("div");
             divTime.textContent = `дедлайн - ${task.realDeadline}`;            
@@ -102,6 +178,8 @@ export default class extends View {
             }
             taskLi.appendChild(divTime);       
           }
+                     
+          taskLi.setAttribute("data-statusname", task.statusName);          
 
           const divBtn = document.createElement("div");
           divBtn.classList.add("hide", "button-wrapper");    
@@ -127,7 +205,10 @@ export default class extends View {
       return elem.projectName === element.projectName;
     });
     if (projectIndex === -1) {
-      projectIndex = this.projectList.push({projectName: element.projectName}) - 1;
+      projectIndex = this.projectList.push({
+        projectName: element.projectName,
+        projectId: element.projectId
+      }) - 1;
       this.projectList[projectIndex].employeeList = [];
     };
   

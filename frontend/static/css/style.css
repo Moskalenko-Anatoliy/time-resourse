@@ -16,6 +16,13 @@
   font-weight: 700;  
 }
 
+@font-face {
+  font-family: "Roboto";
+  src: local("Roboto Medium");
+  src: url("../fonts/Roboto-Medium.ttf");
+  font-weight: 600;  
+}
+
 body {  
   margin: 0 auto;
   padding: 20px 5px 0 5px;
@@ -118,6 +125,8 @@ header h1 {
 
 
 .project-list__employee-list__employee {
+  font-weight: 600;
+
   background: #FFFAF0;
   border: 2px solid grey;
   border-radius: 10px;
@@ -129,13 +138,16 @@ header h1 {
   padding-left: 5px;
   padding-bottom: 5px;
 
-  margin-bottom: 10px;
-  font-weight: 400;    
+  margin-bottom: 10px;   
   text-align: left;  
 }
 
+.project-list__employee-list__employee__name {
+  margin-bottom: 10px;
+}
+
 .project-list__task-list {  
-  padding-top: 5px;
+  font-weight: 400;  
   text-shadow: none;
   text-align: left;
 }
@@ -164,5 +176,9 @@ header h1 {
 .checkbox {    
   width: 1.3rem;
   height: 1.3rem;
-  margin-right: 2px;
+  margin-right: 2px;  
+}
+
+.checkbox-wrapper label {
+  margin-right: 5px;
 }

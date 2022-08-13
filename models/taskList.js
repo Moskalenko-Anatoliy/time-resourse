@@ -3,11 +3,12 @@ const crud = require('../services/db');
 class TaskList {
   async getTaskList(employeeId) {
     try {
-      const taskFilter = await getTaskFilter(employeeId);
+      const taskEmployeeFilter = await getEmployeeTaskFilter(employeeId);
       const rows = await crud.query(
         `
           SELECT 
             project.name as projectName, 
+            project.id as projectId,
             task.name as taskName,
             task.id as taskId,
             task.realdeadline as realDeadline,
@@ -24,7 +25,7 @@ class TaskList {
             taskstatus.name not in ('Архив', 'Заморожена') and
             ifnull(project.Freezed, false) = false and
             ifnull(project.Archive, false) = false and
-            ${taskFilter}
+            ${taskEmployeeFilter}
         `
       );  
     
@@ -48,7 +49,7 @@ class TaskList {
   }
 };
 
-async function getTaskFilter(employeeId) {
+async function getEmployeeTaskFilter(employeeId) {
   try {
     let filter = `task.employee = ${employeeId}`;
     const rows = await crud.query(`
