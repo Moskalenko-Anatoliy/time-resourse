@@ -105,6 +105,9 @@ export default class extends View {
     const periodFilter = document.querySelector("#filter-period");
     this.createTaskPeriodFilter(periodFilter.checked);    
 
+    const shortlistFilter = document.querySelector("#filter-shortlist");
+    this.createShortListFilter(shortlistFilter.checked);    
+
     this.hideProject();
     
   }
@@ -135,7 +138,18 @@ export default class extends View {
     } else {
       e.classList.remove("hide");
     }})            
-  }  
+  }
+  
+  createShortListFilter(checked) {
+    const taskList = document.querySelectorAll(`.project-list__task-list__task[data-shortlist="0"]`)
+    console.log("taskList", taskList)
+    taskList.forEach((e) => {        
+    if (checked) {      
+        e.classList.add("hide");
+    } else {
+      e.classList.remove("hide");
+    }})     
+  }
 
   createHtmlFilter() {
    
@@ -146,6 +160,8 @@ export default class extends View {
     this.createCheckBox("filter-mytask", "Мои", this.createFilter);
 
     this.createCheckBox("filter-period", "Периодические",  this.createFilter);
+
+    this.createCheckBox("filter-shortlist", "Шорт-лист", this.createFilter);    
                   
   };
 
@@ -206,6 +222,7 @@ export default class extends View {
             }
             taskLi.appendChild(divTime);       
           }
+          taskLi.setAttribute("data-shortlist", task.shortList ? "1" : "0");
                      
           taskLi.setAttribute("data-statusname", task.statusName);          
 
@@ -260,7 +277,8 @@ export default class extends View {
         taskId: element.taskId,
         timestamp: element.timestamp,
         realDeadline: element.realDeadline,
-        statusName: element.statusName
+        statusName: element.statusName,
+        shortList: element.shortList
       }) - 1;
     }
   }  

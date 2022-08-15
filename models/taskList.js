@@ -1,3 +1,4 @@
+const e = require('express');
 const crud = require('../services/db');
 
 class TaskList {
@@ -14,7 +15,8 @@ class TaskList {
             task.realdeadline as realDeadline,
             employee.name as employeeName,
             employee.id as employeeId,
-            taskstatus.name as statusName             
+            taskstatus.name as statusName,
+            false as shortList          
           FROM task
             left join employee on task.employee = employee.id
             left join taskstatus on task.status = taskstatus.id
@@ -27,7 +29,19 @@ class TaskList {
             ifnull(project.Archive, false) = false and
             ${taskEmployeeFilter}
         `
-      );  
+      );
+      
+      const planTasks = await crud.query(
+      `
+        SELECT 
+          task
+        FROM tm_docTaskPlan as taskPlan
+          left join task on taskPlan.task = task.id
+          left join employee on task.employee = employee.id
+        where taskPlan.docdate = CURRENT_DATE() and task.employee = ${employeeId}
+
+      `
+      );      
     
       rows.forEach(elem => {
         if (elem.realDeadline !== null) {
@@ -36,6 +50,10 @@ class TaskList {
         } else {
           elem.timestamp = null;
           elem.realDeadline = '';
+        }
+
+        if (planTasks.find(e => e.task === elem.taskId)) {
+          elem.shortList = true;
         }
     
       })
