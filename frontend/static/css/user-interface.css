@@ -25,3 +25,13 @@
   top: 2px;
   left: 2px;
 }
+
+.button-list {
+  display: inline-block; 
+  margin-right: 5px;
+  width: 25px;
+  height: 25px;
+  font-weight: 700;
+  flex-shrink: 0;
+   
+}

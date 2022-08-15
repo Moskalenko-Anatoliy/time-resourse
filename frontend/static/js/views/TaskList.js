@@ -66,7 +66,7 @@ export default class extends View {
   }
 
   hideProject() {
-    const projectListHtml = document.querySelectorAll(".project-list__project");        
+    let projectListHtml = document.querySelectorAll(".project-list__project");        
     projectListHtml.forEach(project => {
       const task = document.querySelector(`.project-list__employee-list__employee:not(.hide) .project-list__task-list__task[data-project="${project.dataset.id}"]:not(.hide)`);      
       if (!task) {  
@@ -81,6 +81,19 @@ export default class extends View {
         }      
       });
     })
+
+    projectListHtml = document.querySelectorAll(`.project-list__project[data-detail="0"]`);        
+    projectListHtml.forEach(project => {
+      const taskList = document.querySelectorAll(`.project-list__employee-list__employee:not(.hide) .project-list__task-list__task[data-project="${project.dataset.id}"]:not(.hide)`);            
+      if (taskList) {
+        taskList.forEach(task => task.classList.add("hide"));
+      }
+      
+      const employeeListHtml = document.querySelectorAll(`.project-list__project[data-id="${project.dataset.id}"]:not(.hide) .project-list__employee-list__employee:not(.hide)`);      
+      if (employeeListHtml) {
+        employeeListHtml.forEach(employee => employee.classList.add("hide"));
+      }
+    })    
 };
 
   createFilter() {    
@@ -141,10 +154,25 @@ export default class extends View {
     projectUl.classList.add("project-list");
     this.projectList.forEach((project, projectIndex) => {
       const projectLi = document.createElement("li");
-      projectLi.classList.add("project-list__project")
-      projectLi.textContent = project.projectName;
+      projectLi.classList.add("project-list__project")            
       projectLi.setAttribute("data-id", project.projectId);
+      projectLi.setAttribute("data-detail", "1");          
       projectUl.appendChild(projectLi);
+
+      const projectWrapper = document.createElement("div");
+      projectWrapper.classList.add("project-wrapper");
+      const listDetailBtn = document.createElement("button");
+      listDetailBtn.classList.add("button-list");
+      listDetailBtn.textContent = '-';
+      listDetailBtn.setAttribute("data-projectId", project.projectId)
+      projectWrapper.appendChild(listDetailBtn);
+      listDetailBtn.addEventListener("click", detailProjectList.bind(this));
+
+      const spanProjectName = document.createElement("span");
+      spanProjectName.textContent =  project.projectName;
+      projectWrapper.appendChild(spanProjectName);
+
+      projectLi.appendChild(projectWrapper);
 
       const employeeUl = document.createElement("ul");      
       employeeUl.classList.add("project-list__employee-list")      
@@ -269,6 +297,19 @@ function sortTasks(a, b) {
   }
 
   return 0  
+}
+
+function detailProjectList(e) {  
+  const project = document.querySelector(`.project-list__project[data-id="${e.target.dataset.projectid}"`);
+  if (e.target.textContent === "-") {
+    project.dataset.detail = "0";
+    e.target.textContent = "+";
+  } else {
+    project.dataset.detail = "1";
+    e.target.textContent = "-";
+  }
+
+  this.createFilter();
 }
 
 
