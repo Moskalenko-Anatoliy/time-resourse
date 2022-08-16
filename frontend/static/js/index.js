@@ -39,14 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.matches("[data-link]")) {
       e.preventDefault()
       navigateTo(e.target.href)
-    }  
-        
-    if (e.target.name === "login-button") {            
-      if (localStorage.getItem("redirectToMainPage") === "1") {
-        localStorage.setItem("redirectToMainPage", 0)
-        navigateTo("/tasks")         
-      }    
-    }
+    }                 
 
     if (e.target.id === "logout-menu") {     
       e.preventDefault() 
@@ -55,7 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
       navigateTo("/") 
     }    
        
-
   });  
   
   router();

@@ -189,3 +189,7 @@ header h1 {
 .checkbox-wrapper label {
   margin-right: 5px;    
 }
+
+.task-detail {
+  padding-top: 10px;
+}

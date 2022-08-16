@@ -5,7 +5,7 @@ const tasksRouter = require('./routes/taskListRouter.js');
 const { serverConfig } = require('./config');
 const path = require('path')
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 
 app.use(express.json());
 

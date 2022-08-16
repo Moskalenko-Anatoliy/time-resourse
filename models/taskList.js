@@ -65,7 +65,40 @@ class TaskList {
     }
   
   }
+
+  async getTask(taskId) {    
+    try {
+      const rows = await crud.query(
+        `
+          SELECT 
+            project.name as projectName, 
+            project.id as projectId,
+            task.name as taskName,
+            task.id as taskId,
+            task.realdeadline as realDeadline,
+            employee.name as employeeName,
+            employee.id as employeeId,
+            taskstatus.name as statusName,
+            task.descr
+          FROM task
+            left join employee on task.employee = employee.id
+            left join taskstatus on task.status = taskstatus.id
+            left join project on task.project = project.id            
+          WHERE              
+            task.id = ${taskId}
+        `      
+      );
+      return rows;;
+      
+    } catch(e) {
+      console.log(e)
+    }
+
+        
+  }
 };
+
+
 
 async function getEmployeeTaskFilter(employeeId) {
   try {

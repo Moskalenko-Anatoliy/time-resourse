@@ -1,5 +1,6 @@
 import View from "./View.js";
 import fetchWithAuth from "../modules/fetchWithAuth.js";
+import TaskForm from "./TaskForm.js";
 
 export default class extends View {
   constructor() {
@@ -141,8 +142,7 @@ export default class extends View {
   }
   
   createShortListFilter(checked) {
-    const taskList = document.querySelectorAll(`.project-list__task-list__task[data-shortlist="0"]`)
-    console.log("taskList", taskList)
+    const taskList = document.querySelectorAll(`.project-list__task-list__task[data-shortlist="0"]`)    
     taskList.forEach((e) => {        
     if (checked) {      
         e.classList.add("hide");
@@ -163,11 +163,28 @@ export default class extends View {
 
     this.createCheckBox("filter-shortlist", "Шорт-лист", this.createFilter);    
                   
-  };
+  };    
 
   createHtmlProjectList() {
     const projectUl = document.createElement("ul");
     projectUl.classList.add("project-list");
+
+    projectUl.addEventListener("click", async (e) => {
+      if (e.target.name === "opentask-btn") {
+        if (e.target.textContent === "Открыть") {
+          const taskForm = new TaskForm(e.target.dataset.taskid);
+          await taskForm.getTask();
+          taskForm.createHtml();
+          e.target.textContent = "Закрыть";
+        } else {
+          e.target.textContent = "Открыть";
+          const detailTaskDiv = document.querySelector(`.task-detail[data-taskid="${e.target.dataset.taskid}"]`);
+          detailTaskDiv.remove();
+        }
+
+      }
+    })
+
     this.projectList.forEach((project, projectIndex) => {
       const projectLi = document.createElement("li");
       projectLi.classList.add("project-list__project")            
@@ -213,6 +230,7 @@ export default class extends View {
           taskLi.classList.add("project-list__task-list__task")
           taskLi.textContent = `${task.taskName}`;
           taskLi.setAttribute("data-project", project.projectId);
+          taskLi.setAttribute("data-id", task.taskId);
           if (task.timestamp !== null) {
             const divTime = document.createElement("div");
             divTime.textContent = `дедлайн - ${task.realDeadline}`;            
@@ -230,8 +248,11 @@ export default class extends View {
           divBtn.classList.add("hide", "button-wrapper");    
           const btn = document.createElement("button");
           btn.classList.add("custom-btn", "task-list__btn");
-          btn.textContent = "Открыть";
-          divBtn.appendChild(btn);
+          btn.textContent = "Открыть";          
+          btn.setAttribute("data-taskid", task.taskId);
+          btn.setAttribute("name", "opentask-btn")
+
+          divBtn.appendChild(btn);          
           taskLi.appendChild(divBtn);                     
                     
           taskUl.appendChild(taskLi);
@@ -241,7 +262,7 @@ export default class extends View {
     
     })
     document.querySelector("#app").appendChild(projectUl);
-
+    
 
   }
 
@@ -282,6 +303,11 @@ export default class extends View {
       }) - 1;
     }
   }  
+
+  createTaskForm(taskId) {
+    const taskForm = document.querySelector(`.project-list__task-list__task[data-id=${taskid}]`);
+
+  }
 }
 
 function sortTasks(a, b) {
@@ -329,6 +355,8 @@ function detailProjectList(e) {
 
   this.createFilter();
 }
+
+
 
 
 
