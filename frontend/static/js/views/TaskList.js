@@ -11,8 +11,14 @@ export default class extends View {
   }
 
   async createHtml() {
+    if ( !(await this.getTaskList()) ) {
+      let event = new Event("showLoginForm", {bubbles: true});
+      document.dispatchEvent(event);   
+      return;
+    }
+
     super.addNavigate();
-    await this.getTaskList();   
+
     this.createHtmlFilter();
     this.tasks.forEach(element => this.createProjectList(element));
     this.projectList.forEach(project => {      
@@ -32,11 +38,12 @@ export default class extends View {
       method: "GET"
     });
     
-    if (!response) { 
-      return;
-    };   
+    if (!response) {        
+      return false;
+    };          
   
     this.tasks = await response.json();
+    return true;
   }
 
   createCheckBox(name, text, clickEvent) {
@@ -118,8 +125,6 @@ export default class extends View {
     employeeList.forEach((e) => {        
       if (checked) {
           e.classList.add("hide");
-      } else {
-        e.classList.remove("hide");
       }})
 
       const employeeNames = document.querySelectorAll(".project-list__employee-list__employee__name")
@@ -132,23 +137,22 @@ export default class extends View {
   }
 
   createTaskPeriodFilter(checked) {         
-    const taskList = document.querySelectorAll(`.project-list__task-list__task[data-statusname="Периодические"]`)
+    const taskList = document.querySelectorAll(`.project-list__task-list__task:not(.hide)[data-statusname="Периодические"]`)
+    console.log(taskList);
     taskList.forEach((e) => {        
-    if (!checked) {      
-        e.classList.add("hide");
-    } else {
-      e.classList.remove("hide");
-    }})            
+      if (!checked) {      
+          e.classList.add("hide");
+      }
+    })            
   }
   
   createShortListFilter(checked) {
-    const taskList = document.querySelectorAll(`.project-list__task-list__task[data-shortlist="0"]`)    
+    const taskList = document.querySelectorAll(`.project-list__task-list__task:not(.hide)[data-shortlist="0"]`)    
     taskList.forEach((e) => {        
-    if (checked) {      
-        e.classList.add("hide");
-    } else {
-      e.classList.remove("hide");
-    }})     
+      if (checked) {      
+          e.classList.add("hide");
+      }
+    })     
   }
 
   createHtmlFilter() {

@@ -67,10 +67,8 @@ export default class extends View {
       const payLoad = helper.parseJwt(result.accessToken);  
       localStorage.setItem("employeeId", payLoad.userId);
 
-      let event = new Event("showTaskList", {bubbles: true}); // (2)
-      document.dispatchEvent(event);       
-
-      //document.querySelector("#tasks").click() 
+      let event = new Event("showTaskList", {bubbles: true});
+      document.dispatchEvent(event);             
         
     } else {
       alert("Неверный логин или пароль");

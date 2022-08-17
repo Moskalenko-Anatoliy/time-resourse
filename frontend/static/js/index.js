@@ -61,3 +61,7 @@ document.addEventListener("showTaskList", (e) => {
   navigateTo("/tasks")
 });
 
+document.addEventListener("showLoginForm", (e) => {
+  navigateTo("/login")
+});
+

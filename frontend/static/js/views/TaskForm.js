@@ -11,7 +11,7 @@ export default class {
       method: "GET"
     });    
     
-    if (!response) { 
+    if (!response) {    
       return;
     };   
   
@@ -25,9 +25,7 @@ export default class {
     divDescr.setAttribute("data-taskid", this.taskId);
     divDescr.innerHTML = this.taskData.descr;
     divDescr.innerHTML = divDescr.innerHTML.replaceAll(/\n/g, "<br>");
-    taskLi.appendChild(divDescr);
- 
-    //document.querySelector("#app").appendChild(divDescr);
+    taskLi.appendChild(divDescr); 
   }
 
 }
