@@ -7,12 +7,12 @@
 }
 
 .custom-btn {
-  width: 76px;
+  width: 85px;
   height: 30px;  
   border-radius: 5px;
   padding: 5px 5px;
   background: #FCFCEE;  
-  border: #FCFCEE;    
+  border: solid black 1px;    
   position: relative;
   cursor: pointer;    
   display: inline-block;
@@ -32,6 +32,5 @@
   width: 25px;
   height: 25px;
   font-weight: 700;
-  flex-shrink: 0;
-   
+  flex-shrink: 0;   
 }

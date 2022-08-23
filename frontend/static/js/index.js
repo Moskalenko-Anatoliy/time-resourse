@@ -1,6 +1,7 @@
-import Nav from "./views/View.js"
-import TaskList from "./views/TaskList.js"
-import LoginForm from "./views/LoginForm.js"
+import Nav from "./views/View.js";
+import TaskList from "./views/TaskList.js";
+import LoginForm from "./views/LoginForm.js";
+import TimeSheet from "./views/TimeSheet.js";
 
 
 const navigateTo = url => {
@@ -14,6 +15,7 @@ const router = async () => {
     { path: /\/$/,  view: Nav},
     { path: /\/tasks$/,  view: TaskList},
     { path: /\/login$/,  view: LoginForm},
+    { path: /\/timesheet$/,  view: TimeSheet},
   ]
 
   //Test each route for potential match

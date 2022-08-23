@@ -137,8 +137,7 @@ export default class extends View {
   }
 
   createTaskPeriodFilter(checked) {         
-    const taskList = document.querySelectorAll(`.project-list__task-list__task:not(.hide)[data-statusname="Периодические"]`)
-    console.log(taskList);
+    const taskList = document.querySelectorAll(`.project-list__task-list__task:not(.hide)[data-statusname="Периодические"]`)    
     taskList.forEach((e) => {        
       if (!checked) {      
           e.classList.add("hide");
