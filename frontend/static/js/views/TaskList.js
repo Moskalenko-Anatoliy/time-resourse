@@ -181,8 +181,8 @@ export default class extends View {
           e.target.textContent = "Закрыть";
         } else {
           e.target.textContent = "Открыть";
-          const detailTaskDiv = document.querySelector(`.task-detail[data-taskid="${e.target.dataset.taskid}"]`);
-          detailTaskDiv.remove();
+          const detailTaskDiv = document.querySelectorAll(`.task-detail[data-taskid="${e.target.dataset.taskid}"]`);
+          detailTaskDiv.forEach(element => element.remove());
         }
 
       }

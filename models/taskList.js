@@ -79,7 +79,8 @@ class TaskList {
             employee.name as employeeName,
             employee.id as employeeId,
             taskstatus.name as statusName,
-            task.descr
+            task.descr,
+            0 as effectTime
           FROM task
             left join employee on task.employee = employee.id
             left join taskstatus on task.status = taskstatus.id
@@ -88,7 +89,15 @@ class TaskList {
             task.id = ${taskId}
         `      
       );
-      return rows;;
+
+      if (rows) {
+        const timeResponse = await crud.query(`select sum(effectTime) as effectTime from timeUseReportDetail where task = ${taskId}`);
+        if (timeResponse) {
+          rows[0].effectTime = timeResponse[0].effectTime;
+        }
+        
+      }
+      return rows;
       
     } catch(e) {
       console.log(e)
