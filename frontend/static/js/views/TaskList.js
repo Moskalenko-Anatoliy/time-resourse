@@ -1,6 +1,7 @@
 import View from "./View.js";
 import fetchWithAuth from "../modules/fetchWithAuth.js";
 import TaskForm from "./TaskForm.js";
+import TimeSheet from "./TimeSheet.js";
 
 export default class extends View {
   constructor() {
@@ -185,7 +186,58 @@ export default class extends View {
           detailTaskDiv.forEach(element => element.remove());
         }
 
+      };
+      
+      if (e.target.name === "timesheetAdd-btn") {               
+          const taskForm = new TaskForm(e.target.dataset.taskid);          
+          taskForm.createTimeSheetAddForm();
+          e.target.disabled = true;
+      };
+
+      if (e.target.name === "timesheet-info-close-btn") {
+        const timesheetInfoWrapper = document.querySelector(`#timesheet-info-wrapper-${e.target.dataset.taskid}`)
+        timesheetInfoWrapper.remove();
+        const timesheetAddBtn = document.querySelector(`#timesheetAdd-btn-${e.target.dataset.taskid}`);
+        timesheetAddBtn.disabled = false;
       }
+
+      if (e.target.name === "timesheet-info-create-btn") {
+        const timeSheet = new TimeSheet();
+        await timeSheet.getOrCreateTimeSheet();
+        
+        if (!timeSheet.reportId) {
+          alert("Не удалось создать таймшит на сервере");
+          return;
+        }
+
+        const comment = document.querySelector(`#timesheet-comment-${e.target.dataset.taskid}`)
+        if (!comment.value) {
+          alert("Комментарий не должен быть пустым");
+          return;
+        }
+
+        const timeInput = document.querySelector(`#timesheet-time-${e.target.dataset.taskid}`);        
+        if (!timeInput.value) {
+          alert("Укажите время")
+          return;
+        }
+        
+        const timeText =  timeInput.value;
+        const timeArr = timeText.split(":");
+        const effectTime = timeArr[0] * 3600 + timeArr[1] * 60;
+
+        await timeSheet.addTimeSheet(timeSheet.reportId, e.target.dataset.taskid, effectTime, comment.value);
+      
+
+        const timesheetInfoWrapper = document.querySelector(`#timesheet-info-wrapper-${e.target.dataset.taskid}`)
+        timesheetInfoWrapper.remove();
+        const timesheetAddBtn = document.querySelector(`#timesheetAdd-btn-${e.target.dataset.taskid}`);
+        timesheetAddBtn.disabled = false;
+      }
+
+
+      //TimeSheet
+
     })
 
     this.projectList.forEach((project, projectIndex) => {
@@ -247,17 +299,27 @@ export default class extends View {
                      
           taskLi.setAttribute("data-statusname", task.statusName);          
 
-          const divBtn = document.createElement("div");
-          divBtn.classList.add("hide", "button-wrapper");    
+          const btnWrapper = document.createElement("div");
+          btnWrapper.classList.add("hide", "button-wrapper");
+          taskLi.appendChild(btnWrapper);                     
+
           const btn = document.createElement("button");
           btn.classList.add("custom-btn", "task-list__btn");
           btn.textContent = "Открыть";          
           btn.setAttribute("data-taskid", task.taskId);
           btn.setAttribute("name", "opentask-btn")
-
-          divBtn.appendChild(btn);          
-          taskLi.appendChild(divBtn);                     
-                    
+          btnWrapper.appendChild(btn);   
+          
+          if (employee.employeeId == localStorage.getItem("employeeId")) {
+            const btnTimeSheet = document.createElement("button");
+            btnTimeSheet.classList.add("custom-btn", "task-list__btn");
+            btnTimeSheet.textContent = "Таймшит";          
+            btnTimeSheet.setAttribute("data-taskid", task.taskId);
+            btnTimeSheet.setAttribute("id", `timesheetAdd-btn-${task.taskId}`);
+            btnTimeSheet.setAttribute("name", "timesheetAdd-btn")
+            btnWrapper.appendChild(btnTimeSheet);       
+          }
+                                            
           taskUl.appendChild(taskLi);
         })          
       })

@@ -17,6 +17,7 @@ class taskListController {
       return res.status(400).json({'message': 'Ошибка получения данных задачи!'})
     };        
   };  
+
 }
 
 module.exports = new taskListController();

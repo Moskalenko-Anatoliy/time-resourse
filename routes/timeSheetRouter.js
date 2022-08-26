@@ -11,5 +11,7 @@ router.post('/create', authMiddleware, timeSheetController.createTimeSheet.bind(
 
 router.get('/info/get', authMiddleware, timeSheetController.getTimeSheetDetail);
 
+router.post('/info/create', authMiddleware, timeSheetController.addTimeSheetInfo);
+
 
 module.exports = router;

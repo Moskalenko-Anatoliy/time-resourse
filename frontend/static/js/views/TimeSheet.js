@@ -39,6 +39,39 @@ export default class extends View {
     return timesheet[0].reportId;
   }  
 
+  async getOrCreateTimeSheet() {
+    this.reportId = await this.getTimeSheetId();
+    if (this.reportId === 0) {
+      this.reportId = await this.createTimeSheet();      
+    };
+
+    if (!this.reportId) {
+      return
+    };
+
+    return this.reportId;
+  };
+
+  async addTimeSheet(reportId, taskId, effectTime, comment) {     
+    const response = await fetchWithAuth(`/api/timesheet/info/create`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        "reportId": reportId,        
+        "taskId": taskId,
+        "comment": comment,
+        "effectTime": effectTime
+      }
+    )});    
+
+    const timesheet = await response.json();
+          
+    return timesheet.status;
+  }    
+
   async getInfoTimeSheet() {
     this.projectList = [];
 

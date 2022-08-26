@@ -17,4 +17,18 @@ function pad(number) {
   return number;
 }
 
+// function showError(field, errorMessage) {
+// 	const errorSpan = document.createElement("span");
+// 	const errorMessage = document.createTextNode(errorMessage);
+
+// 	errorSpan.appendChild(errorMessage);
+// 	errorSpan.className = "errorMsg";
+
+// 	var fieldLabel = document.getElementById(field).previousSibling;
+// 	while (fieldLabel.nodeName.toLowerCase() != "label") {
+// 		fieldLabel = fieldLabel.previousSibling;
+// 	}
+// 	fieldLabel.appendChild(errorSpan);
+// }
+
 export { parseJwt, getTimeStringFromSeconds};
