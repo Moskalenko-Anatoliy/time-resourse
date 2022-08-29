@@ -67,6 +67,34 @@ export default class extends View {
  
   }
 
+  createSearchFilter(taskName) {
+    if (!taskName) {
+      return;
+    }
+
+    const taskList = document.querySelectorAll(`.project-list__task-list__task:not([data-name*="${taskName.toLowerCase()}"])`);
+    taskList.forEach(task => task.classList.add("hide"));
+  };
+
+  createSearchInput() {
+    const inputSearch = document.createElement("input");
+    inputSearch.setAttribute("type", "search");
+    inputSearch.setAttribute("id", "task-search");
+    inputSearch.setAttribute("name", "task-search");
+    inputSearch.setAttribute("placeholder", "Поиск по задачам..");
+
+    inputSearch.addEventListener("input", e => {
+      this.createFilter();
+
+    })
+    
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("search-wrapper");    
+    wrapper.appendChild(inputSearch); 
+
+    document.querySelector("#app").appendChild(wrapper);         
+  }
+
   showAll() {
     const elemenstHtml = document.querySelectorAll(".project-list__project.hide, .project-list__employee-list__employee.hide, .project-list__employee-list__employee__name.hide, .project-list__task-list__task.hide");      
     elemenstHtml.forEach(e => {
@@ -105,7 +133,7 @@ export default class extends View {
     })    
 };
 
-  createFilter() {    
+createFilter() {    
     this.showAll();
 
     const myTask = document.querySelector("#filter-mytask");
@@ -115,7 +143,10 @@ export default class extends View {
     this.createTaskPeriodFilter(periodFilter.checked);    
 
     const shortlistFilter = document.querySelector("#filter-shortlist");
-    this.createShortListFilter(shortlistFilter.checked);    
+    this.createShortListFilter(shortlistFilter.checked); 
+   
+    const taskName = document.querySelector("#task-search").value;
+    this.createSearchFilter(taskName);
 
     this.hideProject();
     
@@ -156,7 +187,8 @@ export default class extends View {
   }
 
   createHtmlFilter() {
-   
+    this.createSearchInput();
+
     const wrapper = document.createElement("div");
     wrapper.classList.add("checkbox-wrapper"); 
     document.querySelector("#app").appendChild(wrapper); 
@@ -284,6 +316,7 @@ export default class extends View {
           const taskLi = document.createElement("li");
           taskLi.classList.add("project-list__task-list__task")
           taskLi.textContent = `${task.taskName}`;
+          taskLi.setAttribute("data-name", task.taskName.toLowerCase());          
           taskLi.setAttribute("data-project", project.projectId);
           taskLi.setAttribute("data-id", task.taskId);
           if (task.timestamp !== null) {

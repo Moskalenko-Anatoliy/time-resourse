@@ -250,3 +250,17 @@ header h1 {
 .timesheet-info-wrapper .custom-btn {
   margin-left: 0px;
 }
+
+.search-wrapper {
+  display: flex;
+  margin-bottom: 5px;
+  justify-content: flex-start;
+  align-items: center;  
+  padding-left: 5px;
+
+}
+
+#task-search {
+  outline-offset: 0px;
+  width: 100%;  
+}
