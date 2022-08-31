@@ -145,6 +145,9 @@ createFilter() {
     const shortlistFilter = document.querySelector("#filter-shortlist");
     this.createShortListFilter(shortlistFilter.checked); 
    
+    const earlyShortlistFilter = document.querySelector("#filter-earlyshortlist");
+    this.createEarlyShortListFilter(earlyShortlistFilter.checked); 
+
     const taskName = document.querySelector("#task-search").value;
     this.createSearchFilter(taskName);
 
@@ -186,6 +189,24 @@ createFilter() {
     })     
   }
 
+  createEarlyShortListFilter(checked) {
+    const taskList = document.querySelectorAll(`.project-list__task-list__task:not(.hide)[data-earlyshortlist="0"]`)    
+    taskList.forEach((e) => {        
+      if (checked) {      
+          e.classList.add("hide");
+      }
+    })     
+  }
+
+  createButtons() {
+
+  }
+
+  createAddTaskBtn() {
+    const btn = document.createElement("input");
+    btn.setAttribute("type", "button");
+  }
+
   createHtmlFilter() {
     this.createSearchInput();
 
@@ -195,9 +216,11 @@ createFilter() {
 
     this.createCheckBox("filter-mytask", "Мои", this.createFilter);
 
-    this.createCheckBox("filter-period", "Периодические",  this.createFilter);
+    this.createCheckBox("filter-period", "Период",  this.createFilter);
 
-    this.createCheckBox("filter-shortlist", "Шорт-лист", this.createFilter);    
+    this.createCheckBox("filter-shortlist", "Сегодня", this.createFilter); 
+    
+    this.createCheckBox("filter-earlyshortlist", "Ранние", this.createFilter);
                   
   };    
 
@@ -329,7 +352,8 @@ createFilter() {
             taskLi.appendChild(divTime);       
           }
           taskLi.setAttribute("data-shortlist", task.shortList ? "1" : "0");
-                     
+          taskLi.setAttribute("data-earlyshortlist", task.earlyShortList ? "1" : "0");
+
           taskLi.setAttribute("data-statusname", task.statusName);          
 
           const btnWrapper = document.createElement("div");
@@ -397,7 +421,8 @@ createFilter() {
         timestamp: element.timestamp,
         realDeadline: element.realDeadline,
         statusName: element.statusName,
-        shortList: element.shortList
+        shortList: element.shortList,
+        earlyShortList: element.earlyShortList
       }) - 1;
     }
   }  

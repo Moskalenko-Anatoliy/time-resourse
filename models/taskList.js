@@ -36,12 +36,17 @@ class TaskList {
       const planTasks = await crud.query(
       `
         SELECT 
-          task
+          task,
+          taskPlan.docdate as docdate,
+          false shortList,
+          false as earlyShortList
         FROM tm_docTaskPlan as taskPlan
           left join task on taskPlan.task = task.id
           left join employee on task.employee = employee.id
-        where taskPlan.docdate = CURRENT_DATE() and task.employee = ${employeeId}
-
+        where 
+          task.employee = ${employeeId} and
+          ifnull(taskPlan.Done, false) = false and
+          taskPlan.docdate <= CURRENT_DATE()
       `
       );      
     
@@ -54,8 +59,15 @@ class TaskList {
           elem.realDeadline = '';
         }
 
-        if (planTasks.find(e => e.task === elem.taskId)) {
-          elem.shortList = true;
+        const index = planTasks.findIndex(e => e.task === elem.taskId); 
+        if (index > 0) {          
+          const date = new Date();
+          const roundDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+          if (planTasks[index].docdate === roundDay) {
+            elem.shortList = true;
+          } else {
+            elem.earlyShortList = true;
+          }
         }
     
       })
