@@ -157,17 +157,22 @@ createHtml() {
 
   super.addNavigate();
 
+  const buttonWrapper = document.createElement("div");
+  buttonWrapper.classList.add("tasklist-button-wrapper");
+  document.querySelector("#app").appendChild(buttonWrapper);    
+
   const btnGetTimeSheet = document.createElement("button");
   btnGetTimeSheet.classList.add("custom-btn", "task-list__btn");
   btnGetTimeSheet.textContent = "Обновить";
   btnGetTimeSheet.addEventListener("click", async (e) => {
     await this.updateTimeSheet();      
   });
+  buttonWrapper.appendChild(btnGetTimeSheet);    
 
   const timeSheetDiv = document.createElement("div");
   timeSheetDiv.classList.add("timesheet-result");  
 
-  document.querySelector("#app").appendChild(btnGetTimeSheet);    
+  
   document.querySelector("#app").appendChild(timeSheetDiv);
 
   this.updateTimeSheet();    
