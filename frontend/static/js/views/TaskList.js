@@ -20,6 +20,7 @@ export default class extends View {
 
     super.addNavigate();
 
+    this.createTaskListButtons();
     this.createHtmlFilter();
     this.tasks.forEach(element => this.createProjectList(element));
     this.projectList.forEach(project => {      
@@ -198,10 +199,28 @@ createFilter() {
     })     
   }
 
-  createButtons() {
+  createButton(name, caption, clickEvent) {
+    const btn = document.createElement("input");
+    btn.setAttribute("type", "button");
+    btn.setAttribute("name", name);
+    btn.classList.add("custom-btn", "task-list__btn");
+    btn.value = caption;
+    btn.addEventListener("click", e => clickEvent.bind(this));    
 
+    return btn;
+  };
+  
+  createTaskListButtons() {
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("tasklist-button-wrapper");
+    document.querySelector("#app").appendChild(wrapper);
+
+    wrapper.appendChild(
+      this.createButton("task-add-btn", "Добавить")
+    );
+    
   }
-
+  
   createAddTaskBtn() {
     const btn = document.createElement("input");
     btn.setAttribute("type", "button");

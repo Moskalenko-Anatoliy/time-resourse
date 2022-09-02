@@ -19,12 +19,18 @@
   box-shadow: 0 0 0 60px rgba(0,0,0,0) inset, .1em .1em .2em black;
 }
 
+.login-section {
+  text-align: left;
+}
+
 .login-button:hover {
   opacity: 0.8;
 }
 
 .login-container {
   padding: 15px;
+  width: 360px;
+  margin: 0 auto;
 }
 
 .login-form {

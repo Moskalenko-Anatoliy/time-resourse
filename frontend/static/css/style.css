@@ -23,12 +23,12 @@
   font-weight: 600;  
 }
 
-body {  
-  margin: 0 auto;
-  padding: 20px 5px 0 5px;  
-  width: 360px;
+body {    
+  margin: 20px auto 0px auto;  
+  min-width: 360px;  
   font-family: "Roboto";
   font-weight: 400;
+  text-align: center;
 }
 
 .task-list__project {
@@ -54,16 +54,22 @@ body {
 
 .main-menu {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   background-color:  #FFFAF0;
   margin-top: 5px;
   padding: 10px;
-  margin-bottom: 5px;
+  margin: 0 auto 5px auto;
+  width: 360px;  
 }
 
 .main-menu a {
   text-decoration: none;
-  color: black;  
+  color: black;
+  margin-right: 15px;  
+}
+
+.main-menu a:last-child {
+  margin-right: 5px;  
 }
 
 .main-menu a:hover {  
@@ -81,13 +87,17 @@ header h1 {
 
 .project-list {
   text-align: left; 
-  width: 350px;   
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  padding: 0 auto;
 }
 
 .project-list__project {  
-  margin: 5px auto 0 auto;
-  padding: 5px 0 0 5px;
-  font-weight: 700;  
+  padding: 5px 10px 5px 0px;
+  font-weight: 700;
+  width: 350px;  
 }
 
 .project-list__employee-list { 
@@ -164,9 +174,11 @@ header h1 {
 
 .checkbox-wrapper {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 5px;
+  justify-content: center;
+  align-items: center;  
+  margin: 0 auto 5px auto;
+  max-width: 720px;
+  min-width: 360px;
 }
 
 .checkbox {    
@@ -199,6 +211,15 @@ header h1 {
 
 .semi-bold {
   font-weight: 600;
+}
+
+.timesheet {
+  text-align: left; 
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  padding: 0 auto;
 }
 
 .timesheet-detail {
@@ -252,15 +273,23 @@ header h1 {
 }
 
 .search-wrapper {
-  display: flex;
-  margin-bottom: 5px;
+  display: flex;  
   justify-content: flex-start;
   align-items: center;  
   padding-left: 5px;
-
+  width: 360px;
+  margin: 0 auto 5px auto;
 }
 
 #task-search {
   outline-offset: 0px;
   width: 100%;  
+}
+
+.tasklist-button-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 5px;
+  margin: 0 auto 5px auto;
+  width: 360px
 }

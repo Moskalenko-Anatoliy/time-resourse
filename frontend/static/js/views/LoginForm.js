@@ -15,11 +15,11 @@ export default class extends View {
     document.querySelector('#app').innerHTML = ` 
     <form id="form-elem" class="login-form">
     <div class="login-container">
-      <section>
+      <section class="login-section">
           <label for="login">Логин</label>
           <input class="login-input" id="login" name="login" type="text" autocomplete="login" required autofocus>
       </section>
-      <section>
+      <section class="login-section">
           <label for="current-password">Пароль</label>
           <input class="login-input" id="current-password" name="password" type="password" autocomplete="current-password" required>
           
