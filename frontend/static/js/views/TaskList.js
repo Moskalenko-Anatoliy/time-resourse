@@ -205,7 +205,7 @@ createFilter() {
     btn.setAttribute("name", name);
     btn.classList.add("custom-btn", "task-list__btn");
     btn.value = caption;
-    btn.addEventListener("click", e => clickEvent.bind(this));    
+    btn.addEventListener("click", e => clickEvent());    
 
     return btn;
   };
@@ -216,8 +216,17 @@ createFilter() {
     document.querySelector("#app").appendChild(wrapper);
 
     wrapper.appendChild(
-      this.createButton("task-add-btn", "Добавить")
+      this.createButton("task-update-btn", "Обновить", (e) => alert("Кнопка находится в разработке")      
+    )); 
+
+    wrapper.appendChild(
+      this.createButton("task-add-btn", "Добавить", (e) => {
+        let event = new Event("showTaskAddForm", {bubbles: true});
+        document.dispatchEvent(event);
+        console.log("showTaskAddForm");
+      })
     );
+   
     
   }
   

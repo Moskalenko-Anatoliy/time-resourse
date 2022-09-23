@@ -89,9 +89,8 @@ header h1 {
   text-align: left; 
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: flex-start;
-  padding: 0 auto;
 }
 
 .project-list__project {  

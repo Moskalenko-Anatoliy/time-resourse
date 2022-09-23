@@ -1,0 +1,33 @@
+.task-add-form {  
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  background-color:  #FFFAF0;
+  margin-top: 5px;
+  padding: 10px;
+  margin: 0 auto 5px auto;
+  min-width: 360px;
+  max-width: 720px;
+  height: auto;
+  border: solid 1px black;
+}
+
+.task-add-input {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.task-add-textarea {
+  resize: none;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+legend {
+  text-align: left;
+}
+
+.task-add-input[type="date"],
+.task-add-input[type="time"] {
+  width: auto;
+}

@@ -2,6 +2,7 @@ import Nav from "./views/View.js";
 import TaskList from "./views/TaskList.js";
 import LoginForm from "./views/LoginForm.js";
 import TimeSheet from "./views/TimeSheet.js";
+import TaskAddForm from "./views/TaskAddForm.js";
 
 
 const navigateTo = url => {
@@ -16,6 +17,7 @@ const router = async () => {
     { path: /\/tasks$/,  view: TaskList},
     { path: /\/login$/,  view: LoginForm},
     { path: /\/timesheet$/,  view: TimeSheet},
+    { path: /\/taskadd$/,  view: TaskAddForm},      
   ]
 
   //Test each route for potential match
@@ -65,5 +67,10 @@ document.addEventListener("showTaskList", (e) => {
 
 document.addEventListener("showLoginForm", (e) => {
   navigateTo("/login")
+});
+
+document.addEventListener("showTaskAddForm", (e) => {
+  console.log("/taskadd");
+  navigateTo("/taskadd")
 });
 
