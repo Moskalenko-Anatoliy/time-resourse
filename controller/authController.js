@@ -22,8 +22,12 @@ class authController {
     try {                  
       const {login, password} = req.body;                
 
-      const user = await User.findByLogin(login);        
+      const user = await User.findByLogin(login);      
       
+      if (!user) {
+        return res.status(200).json('Ошибка сервера');    
+      }
+
       if (user.length === 0) {
         return res.status(200).json('Такого логина нет в систем');    
       }

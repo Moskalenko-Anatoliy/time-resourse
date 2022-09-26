@@ -15,6 +15,7 @@ class User {
         `,
         [login]
       );
+      console.log("row", row)
       return row;
     } catch (err) {
       console.log(err)
